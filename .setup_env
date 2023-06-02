@@ -1,0 +1,11 @@
+export DEBUG=1
+export SECRET_KEY=key
+export DJANGO_ALLOWED_HOSTS="localhost 127.0.0.1"
+export CSRF_TRUSTED_ORIGINS="http://localhost:1337 http://127.0.0.1"
+export SQL_ENGINE=django.db.backends.postgresql
+export SQL_DATABASE=recipes_dev
+export SQL_USER=admin
+export SQL_PASSWORD=JnU4MJirGUoto8
+export SQL_HOST=db
+export SQL_PORT=5432
+export DATABASE=postgres

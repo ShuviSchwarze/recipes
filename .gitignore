@@ -1,7 +1,5 @@
-api/env
+env
 api/mediafiles/*
 .*.prod*
-api/app/__pycache__/__init__.cpython-310.pyc
-api/app/__pycache__/settings.cpython-310.pyc
-api/app/__pycache__/urls.cpython-310.pyc
-api/app/__pycache__/wsgi.cpython-310.pyc
+__pycache__
+!.env.template

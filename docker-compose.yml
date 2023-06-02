@@ -3,13 +3,29 @@ version: '0.0.1'
 services:
   api:
     build: ./api
-    command: python manage.py runserver 0.0.0.0:5000
+    command: gunicorn app.wsgi:application --bind 0.0.0.0:5000
     volumes:
-      - ./api/:/usr/src/api/
+      - type: bind
+        source: ./api
+        target: /usr/src/api
+      - static_volume:/usr/src/api/staticfiles
+      - media_volume:/usr/src/api/mediafiles
     ports:
       - 5000:5000
     env_file:
       - ./.env.dev
+
+  spa:
+    image: node:20-alpine
+    entrypoint: /bin/sh
+    ports:
+      - 8000:8000
+    working_dir: /usr/src/spa
+    volumes:
+      - type: bind
+        source: ./spa
+        target: /usr/src/spa
+    tty: true
 
   db:
     image: postgres:15-alpine
@@ -19,6 +35,21 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=JnU4MJirGUoto8
       - POSTGRES_DB=recipes_dev
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - type: bind
+        source: ./nginx/config
+        target: /etc/nginx/conf.d
+      - static_volume:/home/api/app/staticfiles
+      - media_volume:/home/api/app/mediafiles
+    ports:
+      - 1337:80
+    depends_on:
+      - api 
   
 volumes:
   postgres_data:
+  static_volume:
+  media_volume:

@@ -16,6 +16,5 @@ def image_upload(request):
             {
                 "image_url": image_url,
             },
-            context_instance=RequestContext(request),
         )
     return render(request, "upload.html")
