@@ -33,6 +33,9 @@ class Profile(models.Model):
 
     json_information = models.JSONField("jsonInformation", default=json_default)
 
+    def __str__(self) -> str:
+        return f"{self.user.username}"
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -48,13 +51,22 @@ def save_user_profile(sender, instance, **kwargs):
 class Cuisine(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class DishType(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Allergen(models.Model):
     name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Unit(models.Model):
@@ -71,6 +83,9 @@ class Unit(models.Model):
     )
     base_value = models.FloatField()
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Ingredient(models.Model):
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
@@ -79,6 +94,9 @@ class Ingredient(models.Model):
     image = models.ImageField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     base_quanqity = models.FloatField()
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Recipe(models.Model):
@@ -97,7 +115,12 @@ class Recipe(models.Model):
         default=constants.RecipeStatus.DRAFT,
     )
     cooking_time = models.DurationField()
-    nutritonal_values = models.JSONField("NutritionalValues", default=None)
+
+    nutritonal_values = models.JSONField(
+        "NutritionalValues",
+        null=True,
+        blank=True,
+    )
     difficulty = models.CharField(
         max_length=2,
         choices=constants.RecipeDifficulty.choices,
@@ -108,6 +131,9 @@ class Recipe(models.Model):
 
     ingreditents = models.ManyToManyField(Ingredient, through="RecipeIngredients")
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Instruction(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -115,11 +141,17 @@ class Instruction(models.Model):
     content = models.TextField(blank=True, null=True)
     media = models.URLField(blank=True, null=True)
 
+    def __str__(self) -> str:
+        return f"{self.recipe.title} Step {self.step_number}"
+
 
 class RecipeAttachments(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     url = models.URLField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.title
 
 
 class RecipeIngredients(models.Model):
@@ -127,6 +159,9 @@ class RecipeIngredients(models.Model):
     Ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
     quantity = models.FloatField()
+
+    def __str__(self) -> str:
+        return f"{self.recipe.title} {self.Ingredient.name} {self.quantity}"
 
 
 # class Comment(models.Models):
