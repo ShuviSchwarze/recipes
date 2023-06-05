@@ -59,11 +59,15 @@ class Allergen(models.Model):
 
 class Unit(models.Model):
     name = models.CharField(max_length=50)
-    type = models.SmallIntegerField(
-        choices=[(tag, tag.value) for tag in constants.UnitType]
+    type = models.CharField(
+        max_length=2,
+        choices=constants.UnitType.choices,
+        default=constants.UnitType.MASS,
     )
-    system = models.SmallIntegerField(
-        choices=[(tag, tag.value) for tag in constants.UnitSystem]
+    system = models.CharField(
+        max_length=2,
+        choices=constants.UnitSystem.choices,
+        default=constants.UnitSystem.METRIC,
     )
     base_value = models.FloatField()
 
@@ -88,23 +92,29 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     summary = models.TextField(max_length=255)
     status = models.CharField(
-        max_length=50, choices=[(tag, tag.value) for tag in constants.RecipeStatus]
+        max_length=2,
+        choices=constants.RecipeStatus.choices,
+        default=constants.RecipeStatus.DRAFT,
     )
     cooking_time = models.DurationField()
     nutritonal_values = models.JSONField("NutritionalValues", default=None)
-    difficulty = models.SmallIntegerField(
-        choices=[(tag, tag) for tag in constants.DifficultyLv]
+    difficulty = models.CharField(
+        max_length=2,
+        choices=constants.RecipeDifficulty.choices,
+        default=constants.RecipeDifficulty.EASY,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     ingreditents = models.ManyToManyField(Ingredient, through="RecipeIngredients")
 
+
 class Instruction(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     step_number = models.SmallIntegerField()
     content = models.TextField(blank=True, null=True)
     media = models.URLField(blank=True, null=True)
+
 
 class RecipeAttachments(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

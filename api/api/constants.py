@@ -1,34 +1,36 @@
 from enum import Enum
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
-class RecipeStatus(Enum):
-    DRAFT = "Draft"
-    AWAITING = "Awaiting"
-    NEEDED_CHANGES = "Needed Changes"
-    REJECTED = "Rejected"
-    PUBLISHED = "Published"
-    ARCHIVED = "Archived"
-    DELETED = "Deleted"
+class RecipeStatus(models.TextChoices):
+    DRAFT = "DR", _("Draft")
+    AWAITING = "AW", _("Awaiting")
+    NEEDED_CHANGES = "NC", _("Needed Changes")
+    REJECTED = "RE", _("Rejected")
+    PUBLISHED = "PU", _("Published")
+    ARCHIVED = "AR", _("Archived")
+    DELETED = "DE", _("Deleted")
 
 
-class DifficultyLv(Enum):
-    NA = 0
-    VERY_EASY = 1
-    EASY = 2
-    MODERATE = 3
-    HARD = 4
-    VERY_HARD = 5
+class RecipeDifficulty(models.TextChoices):
+    NA = "NA", _("NA")
+    VERY_EASY = "VE", _("Very Easy")
+    EASY = "EA", _("Easy")
+    MODERATE = "MO", _("Moderate")
+    HARD = "HA", _("Hard")
+    VERY_HARD = "VH", _("Very Hard")
 
 
-class UnitType(Enum):
-    MASS = 0
-    VOLUME = 1
+class UnitType(models.TextChoices):
+    MASS = "MA", _("MASS")
+    VOLUME = "VO", _("VOLUME")
 
 
-class UnitSystem(Enum):
-    METRIC = 0
-    IMPERIAL = 1
-    US = 2
+class UnitSystem(models.TextChoices):
+    METRIC = "ME", _("METRIC")
+    IMPERIAL = "IM", _("IMPERIAL")
+    US = "US", _("US")
 
 
 # class Rating(Enum):
