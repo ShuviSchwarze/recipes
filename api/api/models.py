@@ -100,6 +100,11 @@ class Recipe(models.Model):
 
     ingreditents = models.ManyToManyField(Ingredient, through="RecipeIngredients")
 
+class Instruction(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    step_number = models.SmallIntegerField()
+    content = models.TextField(blank=True, null=True)
+    media = models.URLField(blank=True, null=True)
 
 class RecipeAttachments(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
