@@ -11,7 +11,8 @@ then
     echo "PostgreSQL started"
 fi
 
-python manage.py flush --no-input
-python manage.py migrate
+./manage.py flush --no-input
+./manage.py migrate
+./manage.py createsuperuser --no-input
 
 exec "$@"

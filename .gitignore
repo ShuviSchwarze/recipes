@@ -3,3 +3,4 @@ api/mediafiles/*
 .*.prod*
 __pycache__
 !.env.template
+postgres_data

@@ -2,8 +2,10 @@ version: '0.0.1'
 
 services:
   api:
-    build: ./api
-    command: gunicorn app.wsgi:application --bind 0.0.0.0:5000
+    build:
+      context: ./api
+      dockerfile: ../dockerfiles/api/Dockerfile
+    command: python manage.py runserver 0.0.0.0:5000
     volumes:
       - type: bind
         source: ./api
@@ -14,40 +16,29 @@ services:
       - 5000:5000
     env_file:
       - ./.env.dev
+    depends_on:
+      - db
 
   spa:
-    image: node:20-alpine
-    entrypoint: /bin/sh
+    build:
+      context: ./spa
+      dockerfile: ../dockerfiles/spa/Dockerfile
     ports:
       - 8000:8000
-    working_dir: /usr/src/spa
     volumes:
       - type: bind
         source: ./spa
         target: /usr/src/spa
+    env_file:
+      - ./.env.dev
     tty: true
 
   db:
     image: postgres:15-alpine
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=JnU4MJirGUoto8
-      - POSTGRES_DB=recipes_dev
-
-  nginx:
-    build: ./nginx
-    volumes:
-      - type: bind
-        source: ./nginx/config
-        target: /etc/nginx/conf.d
-      - static_volume:/home/api/app/staticfiles
-      - media_volume:/home/api/app/mediafiles
-    ports:
-      - 1337:80
-    depends_on:
-      - api 
+      - ./postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env.dev
   
 volumes:
   postgres_data:
