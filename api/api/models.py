@@ -94,7 +94,8 @@ class Ingredient(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    base_quanqity = models.FloatField()
+    unit_density = models.FloatField(blank=True, null=True)
+    base_quantity = models.FloatField()
 
     def __str__(self) -> str:
         return self.name
@@ -157,12 +158,12 @@ class RecipeAttachments(models.Model):
 
 class RecipeIngredients(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    Ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT)
     quantity = models.FloatField()
 
     def __str__(self) -> str:
-        return f"{self.recipe.title} {self.Ingredient.name} {self.quantity}"
+        return f"{self.recipe.title} {self.ingredient.name} {self.quantity}"
 
 
 # class Comment(models.Models):

@@ -4,3 +4,4 @@ api/mediafiles/*
 __pycache__
 !.env.template
 postgres_data
+node_modules

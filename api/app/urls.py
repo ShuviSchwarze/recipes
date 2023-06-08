@@ -15,15 +15,38 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.contrib.auth.models import User
+from rest_framework import routers
+import api.views as views
+
+
 from upload.views import image_upload
 
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register(r"users", views.UserViewSet)
+router.register(r"groups", views.GroupViewSet)
+router.register(r"profiles", views.ProfileViewSet)
+router.register(r"cuisines", views.CuisineViewSet)
+router.register(r"dish_types", views.DishTypeViewSet)
+router.register(r"allegens", views.AllergenViewSet)
+router.register(r"units", views.UnitViewSet)
+router.register(r"ingredients", views.IngredientViewSet)
+router.register(r"recipes", views.RecipeViewSet)
+router.register(r"instructions", views.InstructionViewSet)
+router.register(r"recipe_attachments", views.RecipeAttachmentViewSet)
+router.register(r"recipe_ingredients", views.RecipeIngredientViewSet)
+
+
 urlpatterns = [
+    path("api/", include(router.urls)),
     path("upload/", image_upload, name="upload"),
     path("admin/", admin.site.urls),
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
 
 if bool(settings.DEBUG):
