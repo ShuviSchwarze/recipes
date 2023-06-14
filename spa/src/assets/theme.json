@@ -1,0 +1,10 @@
+{
+  "token": {
+    "colorPrimary": "#c90f45",
+    "colorInfo": "#c90f45",
+    "colorBgBase": "#fffaee",
+    "colorTextBase": "#000000",
+    "borderRadius": 9,
+    "wireframe": true
+  }
+}
