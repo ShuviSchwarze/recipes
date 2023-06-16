@@ -1,19 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, Spin, Alert, Col, Row } from "antd";
 import RecipeCard from "../RecipeCard/RecipeCard";
+import useFetch from "../../features/services/useFetch";
 
 const { Content } = Layout;
 
-function ContentBox(children) {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
+function ContentBox(props) {
+    const { response, loading, error } = useFetch("/recipes");
     return (
-        <Content className="bg-white">
-            <div className="m-h-360 p-6 bg-white">
-                <RecipeCard />
-            </div>
+        <Content className="bg-white block">
+            {loading ? (
+                <Spin />
+            ) : error ? (
+                <Alert
+                    message={error.request.status}
+                    description={error.message}
+                />
+            ) : (
+                <div className="p-6 bg-white">
+                    <Row>
+                        {response.results.map((recipe) => (
+                            <Col
+                                xs={{ span: 24 }}
+                                sm={{ span: 12 }}
+                                md={{ span: 8 }}
+                                lg={{ span: 6 }}
+                                gutter={10}
+                                key={recipe.url}
+                            >
+                                <RecipeCard
+                                    title={recipe.title}
+                                    description={recipe.description}
+                                />
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+            )}
         </Content>
     );
 }

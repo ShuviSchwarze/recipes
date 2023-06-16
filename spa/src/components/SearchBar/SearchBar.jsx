@@ -1,6 +1,4 @@
 import { Input } from "antd";
-
-import { SearchOutlined } from "@ant-design/icons";
 import "../../index.css";
 
 const SearchBar = () => {

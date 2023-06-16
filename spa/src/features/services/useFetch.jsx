@@ -1,28 +1,29 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-function useFetch(url) {
-    const [content, setContent] = useState(null);
+axios.defaults.baseURL = "http://localhost:5000/api";
+
+function useFetch(axiosParams) {
+    const [response, setResponse] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        axios
-            .get(url)
-            .then((response) => {
-                setContent(response);
-            })
-            .catch((err) => {
-                setError(err);
-                console.log(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [url]);
-    console.log(content);
+    async function fetchData(axiosParams) {
+        try {
+            const result = await axios.request(axiosParams);
+            setResponse(result.data);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
-    return { content, error, loading };
+    useEffect(() => {
+        fetchData(axiosParams);
+    }, [axiosParams]);
+
+    return { response, loading, error };
 }
 
 export default useFetch;

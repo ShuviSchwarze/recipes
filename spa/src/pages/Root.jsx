@@ -25,9 +25,7 @@ const Root = () => {
                 <Layout className="mt-16 overflow-hidden">
                     <SideBar />
                     <Layout className="overflow-auto max-h-[calc(100vh-64px)]">
-                        <ContentBox>
-                            <RecipeCard/>
-                        </ContentBox>
+                        <ContentBox/>
                     </Layout>
                 </Layout>
             </Layout>
